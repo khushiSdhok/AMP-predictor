@@ -40,9 +40,6 @@ if sequence:
         # Normalize for visualization
         compare_df = pd.concat([class_averages, input_df.rename(index={0: 'Your Sequence'})])
         normalized_df = (compare_df - compare_df.min()) / (compare_df.max() - compare_df.min())
-
-        st.subheader("Feature Comparison (normalized)")
-
         fig, ax = plt.subplots(figsize=(10, 5))
         x = np.arange(len(normalized_df.columns))
         width = 0.25
