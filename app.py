@@ -25,7 +25,7 @@ selected_example = st.selectbox("Try an example sequence (optional):", ["-- Sele
 
 default_value = example_sequences.get(selected_example, "")
 
-sequence = st.text_input("Peptide Sequence (amino acid letters only):").upper().strip()
+sequence = st.text_input("Peptide Sequence (amino acid letters only):", value=default_value).upper().strip()
 
 if sequence:
     try:
