@@ -35,7 +35,7 @@ if sequence:
         st.subheader(f"Prediction: {label}")
         st.write(f"Confidence: {proba:.2%}")
 
-                import numpy as np
+        import numpy as np
 
         # Normalize for visualization
         compare_df = pd.concat([class_averages, input_df.rename(index={0: 'Your Sequence'})])
