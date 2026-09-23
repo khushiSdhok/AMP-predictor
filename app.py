@@ -66,3 +66,36 @@ if sequence:
             st.dataframe(compare_df)
     except Exception:
         st.error("Invalid sequence — use only standard amino acid letters (A-Z, no numbers/symbols).")
+        st.divider()
+        
+st.subheader("Batch Prediction")
+st.write("Upload a CSV with a 'Sequence' column to predict multiple peptides at once.")
+
+uploaded_file = st.file_uploader("Upload CSV", type=['csv'])
+
+if uploaded_file is not None:
+    batch_df = pd.read_csv(uploaded_file)
+
+    results = []
+    for seq in batch_df['Sequence']:
+        try:
+            analysis = ProteinAnalysis(seq.upper().strip())
+            feats = {
+                'length': len(seq),
+                'molecular_weight': analysis.molecular_weight(),
+                'aromaticity': analysis.aromaticity(),
+                'instability_index': analysis.instability_index(),
+                'isoelectric_point': analysis.isoelectric_point(),
+                'gravy': analysis.gravy(),
+                'charge_at_pH7': analysis.charge_at_pH(7.0),
+            }
+            feat_df = pd.DataFrame([feats])
+            pred = model.predict(feat_df)[0]
+            proba = model.predict_proba(feat_df)[0][1]
+            results.append({'Sequence': seq, 'Prediction': 'AMP' if pred == 1 else 'Non-AMP', 'Confidence': f"{proba:.1%}"})
+        except Exception:
+            results.append({'Sequence': seq, 'Prediction': 'Error', 'Confidence': 'N/A'})
+
+    results_df = pd.DataFrame(results)
+    st.dataframe(results_df)
+    st.download_button("Download Results", results_df.to_csv(index=False), "batch_results.csv")
