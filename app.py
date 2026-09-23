@@ -57,7 +57,7 @@ if sequence:
         ax.legend()
         ax.set_ylabel("Normalized value (0-1)")
         st.pyplot(fig)
-                col1, col2 = st.columns([1, 2])
+        col1, col2 = st.columns([1, 2])
 
         with col1:
             st.subheader(f"Prediction: {label}")
