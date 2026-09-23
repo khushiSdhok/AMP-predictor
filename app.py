@@ -35,12 +35,26 @@ if sequence:
         st.subheader(f"Prediction: {label}")
         st.write(f"Confidence: {proba:.2%}")
 
-               # Normalize for visualization (min-max scale each feature 0-1)
+                import numpy as np
+
+        # Normalize for visualization
         compare_df = pd.concat([class_averages, input_df.rename(index={0: 'Your Sequence'})])
         normalized_df = (compare_df - compare_df.min()) / (compare_df.max() - compare_df.min())
 
         st.subheader("Feature Comparison (normalized)")
-        st.bar_chart(normalized_df.T)
+
+        fig, ax = plt.subplots(figsize=(10, 5))
+        x = np.arange(len(normalized_df.columns))
+        width = 0.25
+
+        for i, row_name in enumerate(normalized_df.index):
+            ax.bar(x + i*width, normalized_df.loc[row_name], width, label=row_name)
+
+        ax.set_xticks(x + width)
+        ax.set_xticklabels(normalized_df.columns, rotation=45, ha='right')
+        ax.legend()
+        ax.set_ylabel("Normalized value (0-1)")
+        st.pyplot(fig)
 
         with st.expander("See raw feature values"):
             st.dataframe(compare_df)
