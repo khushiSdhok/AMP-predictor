@@ -32,8 +32,7 @@ if sequence:
         proba = model.predict_proba(input_df)[0][1]
 
         label = "Antimicrobial (AMP)" if pred == 1 else "Non-antimicrobial"
-        st.subheader(f"Prediction: {label}")
-        st.write(f"Confidence: {proba:.2%}")
+       
 
         import numpy as np
 
