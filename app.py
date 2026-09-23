@@ -35,10 +35,14 @@ if sequence:
         st.subheader(f"Prediction: {label}")
         st.write(f"Confidence: {proba:.2%}")
 
-        # Comparison chart: your sequence vs class averages
+               # Normalize for visualization (min-max scale each feature 0-1)
         compare_df = pd.concat([class_averages, input_df.rename(index={0: 'Your Sequence'})])
-        st.subheader("Feature Comparison")
-        st.bar_chart(compare_df.T)
+        normalized_df = (compare_df - compare_df.min()) / (compare_df.max() - compare_df.min())
 
+        st.subheader("Feature Comparison (normalized)")
+        st.bar_chart(normalized_df.T)
+
+        with st.expander("See raw feature values"):
+            st.dataframe(compare_df)
     except Exception:
         st.error("Invalid sequence — use only standard amino acid letters (A-Z, no numbers/symbols).")
