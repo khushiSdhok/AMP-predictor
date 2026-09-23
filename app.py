@@ -46,9 +46,11 @@ if sequence:
         fig, ax = plt.subplots(figsize=(10, 5))
         x = np.arange(len(normalized_df.columns))
         width = 0.25
+        colors = ['#6B8CAE', '#C97B4A', '#5A9367']  # muted blue, muted orange, muted green
+
 
         for i, row_name in enumerate(normalized_df.index):
-            ax.bar(x + i*width, normalized_df.loc[row_name], width, label=row_name)
+                ax.bar(x + i*width, normalized_df.loc[row_name], width, label=row_name, color=colors[i])
 
         ax.set_xticks(x + width)
         ax.set_xticklabels(normalized_df.columns, rotation=45, ha='right')
