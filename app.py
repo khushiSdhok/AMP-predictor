@@ -8,8 +8,22 @@ from Bio.SeqUtils.ProtParam import ProteinAnalysis
 model = joblib.load('amp_model.pkl')
 class_averages = joblib.load('class_averages.pkl')
 
+col_a, col_b, col_c = st.columns(3)
+col_a.metric("Training Data", "6,338 peptides")
+col_b.metric("Model Accuracy", "87%")
+col_c.metric("ROC-AUC", "0.93")
+
 st.title("Antimicrobial Peptide (AMP) Predictor")
 st.write("Paste a peptide sequence to predict antimicrobial activity and compare its properties.")
+
+example_sequences = {
+    "Anoplin (known AMP)": "GLLKRIKTLL",
+    "Nephilakinin-1 (non-AMP)": "GPNPGFSPFR"
+}
+
+selected_example = st.selectbox("Try an example sequence (optional):", ["-- Select --"] + list(example_sequences.keys()))
+
+default_value = example_sequences.get(selected_example, "")
 
 sequence = st.text_input("Peptide Sequence (amino acid letters only):").upper().strip()
 
